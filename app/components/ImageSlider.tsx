@@ -22,17 +22,15 @@ export default function ImageSlider({ images }: ImageSliderProps) {
 
   return (
     <div className="relative w-full rounded-xl overflow-hidden bg-[#0a0a14] border border-[#1e1e36] group">
-      {/* Image — natural ratio, no cropping */}
-      <div className="relative w-full">
+      {/* Image */}
+      <div className="relative w-full aspect-[16/9] overflow-hidden">
         <Image
           key={current}
           src={images[current].src}
           alt={images[current].title}
-          width={1280}
-          height={800}
-          className="w-full h-auto animate-fade-in"
-          style={{ display: "block", maxHeight: "560px", objectFit: "contain" }}
-          sizes="(max-width: 768px) 100vw, 860px"
+          fill
+          className="object-cover object-top animate-fade-in"
+          sizes="(max-width: 768px) 100vw, 800px"
         />
 
         {/* Gradient overlay bottom */}
