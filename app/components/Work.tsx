@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "../context/LanguageContext";
 
 interface Metric {
   value: string;
@@ -132,6 +133,7 @@ const statusStyles: Record<Project["status"], string> = {
 
 export default function Work() {
   const [expanded, setExpanded] = useState<number | null>(0);
+  const { t } = useLang();
 
   return (
     <section id="work" className="py-28 px-6">
@@ -140,17 +142,17 @@ export default function Work() {
         <div className="reveal flex items-center gap-3 mb-4">
           <span className="font-mono text-sm text-purple-400">03.</span>
           <span className="text-sm uppercase tracking-widest text-gray-500">
-            Work
+            {t.work.label}
           </span>
           <div className="flex-1 h-px bg-[#1e1e36]" />
         </div>
 
         <div className="reveal mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            Selected <span className="gradient-text">Projects</span>
+            {t.work.heading} <span className="gradient-text">{t.work.headingHighlight}</span>
           </h2>
           <p className="mt-3 text-gray-500 text-sm">
-            Production work from enterprise, government, and startup clients.
+            {t.work.subheading}
           </p>
         </div>
 
@@ -177,7 +179,7 @@ export default function Work() {
                     <span
                       className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${statusStyles[project.status]}`}
                     >
-                      {project.status}
+                      {t.work.statuses[project.status]}
                     </span>
                     {project.url && (
                       <a
@@ -187,7 +189,7 @@ export default function Work() {
                         className="text-xs text-purple-400 hover:text-purple-300 underline underline-offset-2"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        ↗ Visit
+                        {t.work.visit}
                       </a>
                     )}
                   </div>
@@ -265,7 +267,7 @@ export default function Work() {
                   {/* Overview */}
                   <div>
                     <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">
-                      Overview
+                      {t.work.overview}
                     </h4>
                     <p className="text-sm text-gray-400 leading-relaxed">
                       {project.overview}
@@ -276,7 +278,7 @@ export default function Work() {
                   {project.screens && (
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">
-                        Screens Developed
+                        {t.work.screens}
                       </h4>
                       <ul className="space-y-2">
                         {project.screens.map((s, idx) => (
@@ -297,7 +299,7 @@ export default function Work() {
                   {/* Highlights */}
                   <div>
                     <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">
-                      Key Contributions
+                      {t.work.contributions}
                     </h4>
                     <ul className="space-y-2">
                       {project.highlights.map((h, idx) => (
@@ -329,7 +331,7 @@ export default function Work() {
         {/* Other experiences */}
         <div className="reveal mt-10 p-6 bg-[#0f0f1a] border border-[#1e1e36] rounded-2xl">
           <h3 className="text-sm font-semibold text-gray-300 mb-4">
-            Other Experience
+            {t.work.otherExp}
           </h3>
           <div className="flex flex-wrap gap-2">
             {[

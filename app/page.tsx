@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { LanguageProvider } from "./context/LanguageContext";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -29,14 +30,16 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#080810] overflow-x-hidden">
-      <Header />
-      <Hero />
-      <About />
-      <Skills />
-      <Work />
-      <Contact />
-      <Footer />
-    </main>
+    <LanguageProvider>
+      <main className="min-h-screen bg-[#080810] overflow-x-hidden">
+        <Header />
+        <Hero />
+        <About />
+        <Skills />
+        <Work />
+        <Contact />
+        <Footer />
+      </main>
+    </LanguageProvider>
   );
 }
