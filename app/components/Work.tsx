@@ -1,0 +1,346 @@
+"use client";
+
+import { useState } from "react";
+
+interface Metric {
+  value: string;
+  label: string;
+}
+
+interface Project {
+  title: string;
+  subtitle: string;
+  period: string;
+  role: string;
+  rolePct: string;
+  status: "Live" | "Internal" | "Completed";
+  url?: string;
+  stack: string[];
+  overview: string;
+  highlights: string[];
+  metrics?: Metric[];
+  screens?: string[];
+  note?: string;
+}
+
+const projects: Project[] = [
+  {
+    title: "Engineering BigData Platform",
+    subtitle:
+      "Cloud-based Engineering BigData & SW Utilization Platform (Phase 2–3) · KITECH",
+    period: "2023.02 – 2023.12",
+    role: "Frontend 70% / Backend 30%",
+    rolePct: "70",
+    status: "Live",
+    url: "https://www.bigdata-eng.com",
+    stack: ["JavaScript", "eCharts", "realGrid", "Spring Boot", "Java", "SQL", "GitLab"],
+    overview:
+      "Developed key modules for a government-backed engineering data platform (KITECH) serving 2,500+ registered users. Contributed across the full development lifecycle — from DB schema design and UI development to unit testing and defect resolution — on two major sub-projects: the Notification Service and the Public Dataset module.",
+    highlights: [
+      "Built 4 Notification Service screens end-to-end (subscription, history, recipient management, alert dashboard)",
+      "Developed Admin Dashboard with 6 eCharts trend visualizations",
+      "Implemented Public Dataset detail view — realGrid table + eCharts chart two-panel layout",
+      "Wrote dashboard aggregation SQL for notification stats",
+      "Executed unit test cases for 4+ screens; resolved all critical defects before release",
+    ],
+    metrics: [
+      { value: "501K+", label: "Total Visits" },
+      { value: "2,551", label: "Registered Users" },
+      { value: "290K+", label: "Notifications Sent" },
+      { value: "6.3M+", label: "Bid Announcements" },
+    ],
+    screens: [
+      "Admin Dashboard — KPI cards + 6 eCharts trend charts",
+      "Notification Service — Subscription, history, recipient management",
+      "Public Dataset Search — Multi-category keyword search, paginated results",
+      "Public Dataset Detail — realGrid table (date/region filter, Excel export) + eCharts chart",
+    ],
+    note: "Source code is confidential (internal company project) · Screenshots available",
+  },
+  {
+    title: "PERFORMAX",
+    subtitle: "Long-running Enterprise Platform · Internal",
+    period: "2023.12 – 2025.12",
+    role: "Frontend Lead",
+    rolePct: "80",
+    status: "Internal",
+    stack: ["React", "JavaScript", "TypeScript", "REST API", "GitLab"],
+    overview:
+      "Led frontend development on a large-scale enterprise platform over 2+ years. PERFORMAX served as the foundation for multiple derived projects including 놀러오개 and AlpetaX, demonstrating its architectural scalability and reusability across different domains.",
+    highlights: [
+      "Maintained and extended the platform over 2+ years of continuous development",
+      "Architected reusable component libraries adopted by 2+ derivative projects",
+      "Collaborated directly with product managers and designers in Agile sprints",
+      "Managed complex state across large-scale multi-page applications",
+    ],
+    note: "Source code is confidential (internal company project)",
+  },
+  {
+    title: "ASTRON CWS UI Renewal",
+    subtitle: "Full UI Redesign · Enterprise Dashboard",
+    period: "2024.11 – 2025.02",
+    role: "Frontend Developer",
+    rolePct: "100",
+    status: "Completed",
+    stack: ["React", "Tailwind CSS", "TypeScript", "GitLab"],
+    overview:
+      "Led a complete frontend UI overhaul for ASTRON CWS, modernizing the design system using Tailwind CSS. Delivered a significantly improved user experience through systematic component redesign, improved responsiveness, and cleaner visual hierarchy.",
+    highlights: [
+      "Migrated the entire UI to Tailwind CSS, replacing legacy stylesheets",
+      "Redesigned core dashboard layouts for improved usability and visual clarity",
+      "Implemented responsive breakpoints for cross-device compatibility",
+      "Reduced styling code volume while increasing visual consistency",
+    ],
+    note: "Before/After screenshots demonstrate significant visual improvement",
+  },
+  {
+    title: "BMEA Marine Parts Visualization",
+    subtitle: "부산조선기자재협회 · Data Visualization Dashboard",
+    period: "2025.07 – 2025.12",
+    role: "Frontend Developer",
+    rolePct: "90",
+    status: "Completed",
+    stack: ["React", "TypeScript", "Hero UI", "eCharts", "GitLab"],
+    overview:
+      "Built a comprehensive data visualization dashboard for the Busan Marine Equipment Association (BMEA), providing industry-wide analytics and insights for the Korean shipbuilding parts sector using Hero UI component library.",
+    highlights: [
+      "Implemented complex multi-chart dashboards using eCharts for industry trend analysis",
+      "Built dynamic data filtering and drill-down views for granular data exploration",
+      "Utilized Hero UI for consistent, accessible component design",
+      "Delivered responsive layouts optimized for both desktop and presentation displays",
+    ],
+    note: "Source code is confidential (internal company project)",
+  },
+];
+
+const statusStyles: Record<Project["status"], string> = {
+  Live: "bg-green-900/30 text-green-400 border border-green-800/40",
+  Internal: "bg-gray-800/60 text-gray-400 border border-gray-700/40",
+  Completed: "bg-blue-900/30 text-blue-400 border border-blue-800/40",
+};
+
+export default function Work() {
+  const [expanded, setExpanded] = useState<number | null>(0);
+
+  return (
+    <section id="work" className="py-28 px-6">
+      <div className="max-w-5xl mx-auto">
+        {/* Section label */}
+        <div className="reveal flex items-center gap-3 mb-4">
+          <span className="font-mono text-sm text-purple-400">03.</span>
+          <span className="text-sm uppercase tracking-widest text-gray-500">
+            Work
+          </span>
+          <div className="flex-1 h-px bg-[#1e1e36]" />
+        </div>
+
+        <div className="reveal mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">
+            Selected <span className="gradient-text">Projects</span>
+          </h2>
+          <p className="mt-3 text-gray-500 text-sm">
+            Production work from enterprise, government, and startup clients.
+          </p>
+        </div>
+
+        <div className="reveal space-y-5">
+          {projects.map((project, i) => (
+            <div
+              key={i}
+              className={`bg-[#0f0f1a] border rounded-2xl overflow-hidden transition-all duration-300 ${
+                expanded === i
+                  ? "border-purple-700/40 shadow-lg shadow-purple-900/10"
+                  : "border-[#1e1e36] hover:border-[#2a2a4a]"
+              }`}
+            >
+              {/* Card Header — always visible */}
+              <button
+                className="w-full text-left p-6 flex flex-col sm:flex-row sm:items-center gap-4"
+                onClick={() => setExpanded(expanded === i ? null : i)}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <h3 className="text-lg font-bold text-white">
+                      {project.title}
+                    </h3>
+                    <span
+                      className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${statusStyles[project.status]}`}
+                    >
+                      {project.status}
+                    </span>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-purple-400 hover:text-purple-300 underline underline-offset-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        ↗ Visit
+                      </a>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500 truncate">
+                    {project.subtitle}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4 flex-shrink-0">
+                  <div className="hidden sm:block text-right">
+                    <p className="text-xs text-gray-600 font-mono">
+                      {project.period}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {project.role}
+                    </p>
+                  </div>
+                  <div
+                    className={`w-6 h-6 rounded-full flex items-center justify-center border transition-all ${
+                      expanded === i
+                        ? "border-purple-600 bg-purple-900/30 rotate-180"
+                        : "border-[#2a2a4a]"
+                    }`}
+                  >
+                    <svg
+                      className="w-3 h-3 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </button>
+
+              {/* Expanded content */}
+              {expanded === i && (
+                <div className="px-6 pb-7 border-t border-[#1e1e36] pt-6 space-y-6">
+                  {/* Stack */}
+                  <div className="flex flex-wrap gap-2">
+                    {project.stack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="text-xs px-3 py-1 rounded-lg bg-purple-900/20 text-purple-300 border border-purple-800/30"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Metrics */}
+                  {project.metrics && (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {project.metrics.map((m) => (
+                        <div
+                          key={m.label}
+                          className="p-3 bg-[#16162a] rounded-xl text-center border border-[#1e1e36]"
+                        >
+                          <p className="text-xl font-bold gradient-text">
+                            {m.value}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {m.label}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Overview */}
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">
+                      Overview
+                    </h4>
+                    <p className="text-sm text-gray-400 leading-relaxed">
+                      {project.overview}
+                    </p>
+                  </div>
+
+                  {/* Screens */}
+                  {project.screens && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">
+                        Screens Developed
+                      </h4>
+                      <ul className="space-y-2">
+                        {project.screens.map((s, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start gap-2 text-sm text-gray-400"
+                          >
+                            <span className="text-purple-500 mt-0.5 flex-shrink-0">
+                              ▸
+                            </span>
+                            {s}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Highlights */}
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">
+                      Key Contributions
+                    </h4>
+                    <ul className="space-y-2">
+                      {project.highlights.map((h, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 text-sm text-gray-400"
+                        >
+                          <span className="text-green-500 mt-0.5 flex-shrink-0">
+                            ✓
+                          </span>
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Note */}
+                  {project.note && (
+                    <p className="text-xs text-gray-600 font-mono border-t border-[#1e1e36] pt-4">
+                      * {project.note}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Other experiences */}
+        <div className="reveal mt-10 p-6 bg-[#0f0f1a] border border-[#1e1e36] rounded-2xl">
+          <h3 className="text-sm font-semibold text-gray-300 mb-4">
+            Other Experience
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "중앙장애인권익옹호기관 (Maintenance)",
+              "KFA Web / eCharts",
+              "Mammoth Data (Toast Grid)",
+              "Construction CALS Crawling (Python)",
+              "KITECH Maintenance",
+              "GS Certification (PMD / Security)",
+              "AlpetaX",
+              "HugAndMeong (놀러오개)",
+            ].map((item) => (
+              <span
+                key={item}
+                className="text-xs text-gray-500 px-3 py-1.5 bg-[#0a0a14] border border-[#1e1e36] rounded-lg"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
