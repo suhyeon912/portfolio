@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useLang } from "../context/LanguageContext";
+import ImageSlider, { type SlideImage } from "./ImageSlider";
 
 interface Metric {
   value: string;
@@ -21,6 +22,7 @@ interface Project {
   highlights: string[];
   metrics?: Metric[];
   screens?: string[];
+  images?: SlideImage[];
   note?: string;
 }
 
@@ -56,6 +58,12 @@ const projects: Project[] = [
       "Public Dataset Search — Multi-category keyword search, paginated results",
       "Public Dataset Detail — realGrid table (date/region filter, Excel export) + eCharts chart",
     ],
+    images: [
+      { src: "/images/bigdata/01-dashboard.png", title: "Admin Dashboard — KPI + eCharts trend charts" },
+      { src: "/images/bigdata/02-notification.png", title: "Notification Service — subscription & alert management" },
+      { src: "/images/bigdata/03-dataset-search.png", title: "Public Dataset Search — multi-category keyword search" },
+      { src: "/images/bigdata/04-dataset-detail.png", title: "Public Dataset Detail — realGrid + eCharts two-panel layout" },
+    ],
     note: "Source code is confidential (internal company project) · Screenshots available",
   },
   {
@@ -84,6 +92,18 @@ const projects: Project[] = [
       "Task Management — Calendar (daily/weekly/monthly views), To-Do list, daily reports",
       "Sales Management — Activity tracking, consultation logs, performance targets, real-time ranking",
       "Insight Analytics — Individual Report, Work Performance, Sales Performance (multi-period comparison)",
+    ],
+    images: [
+      { src: "/images/performax/01-integrated-dashboard.png", title: "Integrated Dashboard — real-time attendance + sales feed" },
+      { src: "/images/performax/02-access-control.png", title: "Access Control — terminal status + live entry log" },
+      { src: "/images/performax/03-usage-status.png", title: "Usage Status — monthly activity breakdown" },
+      { src: "/images/performax/04-work-management.png", title: "Work Management — web/app usage tracking" },
+      { src: "/images/performax/05-attendance.png", title: "Attendance Management — dept charts + ranking" },
+      { src: "/images/performax/06-todo.png", title: "Task Management — To-Do list" },
+      { src: "/images/performax/07-calendar.png", title: "Task Management — Calendar view" },
+      { src: "/images/performax/08-sales-performance.png", title: "Sales Performance — activity insights" },
+      { src: "/images/performax/09-work-performance.png", title: "Work Performance — individual analytics" },
+      { src: "/images/performax/10-individual-report.png", title: "Individual Report — employee lookup" },
     ],
     note: "Source code is confidential (internal company project) · Screenshots available",
   },
@@ -131,6 +151,14 @@ const projects: Project[] = [
       "조선소 도착 예정시간 예측 — Step-by-step ETA timeline per vehicle, predicted vs. actual arrival time comparison",
       "납품 예정일별 필요 차량 예측 — Weekly grid: ML-predicted FTL/LTL vehicle count vs. actual by tonnage category",
     ],
+    images: [
+      { src: "/images/bmea/01-regional-map-list.png", title: "권역분류 최적화 분석 — supplier list view" },
+      { src: "/images/bmea/02-regional-map-polygon.png", title: "권역분류 최적화 분석 — region polygon map" },
+      { src: "/images/bmea/03-loading-time.png", title: "화물특성 상차시간 분석 — actual vs. ML-predicted loading time" },
+      { src: "/images/bmea/04-warehouse.png", title: "창고 이용 물량 다차원 분석 — ABC importance + in/out chart" },
+      { src: "/images/bmea/05-shipyard-eta.png", title: "조선소 도착 예정시간 예측 — step-by-step ETA timeline" },
+      { src: "/images/bmea/06-vehicle-forecast.png", title: "납품 예정일별 필요 차량 예측 — weekly FTL/LTL forecast" },
+    ],
     note: "Source code is confidential (internal company project) · Screenshots from user manual available",
   },
 ];
@@ -144,6 +172,7 @@ const statusStyles: Record<Project["status"], string> = {
 export default function Work() {
   const [expanded, setExpanded] = useState<number | null>(0);
   const { t } = useLang();
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   return (
     <section id="work" className="py-28 px-6">
@@ -170,6 +199,7 @@ export default function Work() {
           {projects.map((project, i) => (
             <div
               key={i}
+              ref={(el) => { cardRefs.current[i] = el; }}
               className={`bg-[#0f0f1a] border rounded-2xl overflow-hidden transition-all duration-300 ${
                 expanded === i
                   ? "border-purple-700/40 shadow-lg shadow-purple-900/10"
@@ -179,7 +209,18 @@ export default function Work() {
               {/* Card Header — always visible */}
               <button
                 className="w-full text-left p-6 flex flex-col sm:flex-row sm:items-center gap-4"
-                onClick={() => setExpanded(expanded === i ? null : i)}
+                onClick={() => {
+                  const isOpening = expanded !== i;
+                  setExpanded(isOpening ? i : null);
+                  if (isOpening) {
+                    setTimeout(() => {
+                      const el = cardRefs.current[i];
+                      if (!el) return;
+                      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+                      window.scrollTo({ top, behavior: "smooth" });
+                    }, 50);
+                  }
+                }}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -243,6 +284,11 @@ export default function Work() {
               {/* Expanded content */}
               {expanded === i && (
                 <div className="px-6 pb-7 border-t border-[#1e1e36] pt-6 space-y-6">
+                  {/* Image Slider */}
+                  {project.images && project.images.length > 0 && (
+                    <ImageSlider images={project.images} />
+                  )}
+
                   {/* Stack */}
                   <div className="flex flex-wrap gap-2">
                     {project.stack.map((tech) => (
