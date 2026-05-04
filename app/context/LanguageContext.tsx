@@ -31,13 +31,26 @@ function detectLang(): Lang {
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
+  // 언어에 따라 <html>에 lang-ko 클래스 토글 → Pretendard 폰트 적용
   useEffect(() => {
-    setLangState(detectLang());
+    const detected = detectLang();
+    setLangState(detected);
+    applyLangClass(detected);
   }, []);
+
+  function applyLangClass(l: Lang) {
+    const html = document.documentElement;
+    if (l === "ko") {
+      html.classList.add("lang-ko");
+    } else {
+      html.classList.remove("lang-ko");
+    }
+  }
 
   const setLang = (l: Lang) => {
     setLangState(l);
     localStorage.setItem("portfolio-lang", l);
+    applyLangClass(l);
   };
 
   const toggle = () => setLang(lang === "en" ? "ko" : "en");
