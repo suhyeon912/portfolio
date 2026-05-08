@@ -48,7 +48,7 @@ export default function Hero() {
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center pb-24">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 text-xs font-mono text-purple-400 bg-purple-900/20 border border-purple-800/40 rounded-full animate-fade-in">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
           {t.hero.badge}
